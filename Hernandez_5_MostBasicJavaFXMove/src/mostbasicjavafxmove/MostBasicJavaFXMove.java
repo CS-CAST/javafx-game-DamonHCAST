@@ -56,7 +56,7 @@ public class MostBasicJavaFXMove extends Application {
         primaryStage.setTitle("box check");
         primaryStage.setScene(scene);
 
-        Canvas canvas = new Canvas(600, 600);
+        Canvas canvas = new Canvas(600, 600); //Screen Size
 
         //Notice gc is not being used yet 
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -74,37 +74,39 @@ public class MostBasicJavaFXMove extends Application {
         //we have created an animation timer --- the class MUST be overwritten - look below 
         AnimationTimer timer = new MyTimer();
 
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                String code = event.getCode().toString();
-                //    input.remove( code );
-                if (event.getCode() == KeyCode.RIGHT) { // don't use toString here!!!
+        scene.setOnKeyPressed((KeyEvent event) -> {
+            String code = event.getCode().toString();
+            if (null != event.getCode()) //    input.remove( code );
+            switch (event.getCode()) {
+                case RIGHT:
+                    // don't use toString here!!!
                     box.setX(box.getX() + 5);
                     box.setFill(Color.CADETBLUE);
                     checkBounds(box);
-                } else if (event.getCode() == KeyCode.LEFT) {
+                    break;
+                case LEFT:
                     box.setX(box.getX() - 5);
                     box.setFill(Color.RED);
                     checkBounds(box);
-                } else if (event.getCode() == KeyCode.UP) {
+                    break;
+                case UP:
                     box.setY(box.getY() - 5);
                     box.setFill(Color.GREEN);
                     checkBounds(box);
-                } else if (event.getCode() == KeyCode.DOWN) {
+                    break;
+                case DOWN:
                     box.setY(box.getY() + 5);
                     box.setFill(Color.ORANGE);
                     checkBounds(box);
-                }
+                    break;
+                default:
+                    break;
             }
         });
 
-        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT) {
-                    // rectangleVelocity.set(0);
-                }
+        scene.setOnKeyReleased((KeyEvent event) -> {
+            if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT) {
+                // rectangleVelocity.set(0);
             }
         });
 
@@ -163,8 +165,8 @@ public class MostBasicJavaFXMove extends Application {
                 movedown = true;
             }
 
-            // stop();
-            // System.out.println("Animation stopped");
+            //stop();
+            //System.out.println("Animation stopped");
         }
     }
 
@@ -185,8 +187,6 @@ public class MostBasicJavaFXMove extends Application {
         }
         if (collisionDetected) {
             box.setFill(Color.RED);
-        } else {
-            box.setFill(Color.ORANGE);
         }
     }
 
