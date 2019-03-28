@@ -16,6 +16,7 @@
 package mostbasicjavafxmove;
 
 import java.util.ArrayList;
+import java.util.Random;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -47,12 +48,13 @@ public class MostBasicJavaFXMove extends Application {
     static ArrayList<String> input = new ArrayList<String>();
     static Rectangle rect;
     static Rectangle box;
+    static boolean game = true;
 
     @Override
     public void start(Stage primaryStage) {
 
         Group root = new Group();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, Color.BLACK);
         primaryStage.setTitle("box check");
         primaryStage.setScene(scene);
 
@@ -65,7 +67,7 @@ public class MostBasicJavaFXMove extends Application {
         box = new Rectangle(300, 300, 23, 23);
         box.setFill(Color.PLUM);
 
-        rect = new Rectangle(150, 50, 25, 25);
+        rect = new Rectangle(0, 50, 25, 25);
         rect.setFill(Color.BLUE);
 
         // notice the difference in how an ArrayList adds items 
@@ -77,30 +79,32 @@ public class MostBasicJavaFXMove extends Application {
         scene.setOnKeyPressed((KeyEvent event) -> {
             String code = event.getCode().toString();
             if (null != event.getCode()) //    input.remove( code );
-            switch (event.getCode()) {
-                case RIGHT:
-                    // don't use toString here!!!
-                    box.setX(box.getX() + 5);
-                    box.setFill(Color.CADETBLUE);
-                    checkBounds(box);
-                    break;
-                case LEFT:
-                    box.setX(box.getX() - 5);
-                    box.setFill(Color.RED);
-                    checkBounds(box);
-                    break;
-                case UP:
-                    box.setY(box.getY() - 5);
-                    box.setFill(Color.GREEN);
-                    checkBounds(box);
-                    break;
-                case DOWN:
-                    box.setY(box.getY() + 5);
-                    box.setFill(Color.ORANGE);
-                    checkBounds(box);
-                    break;
-                default:
-                    break;
+            {
+                switch (event.getCode()) {
+                    case RIGHT:
+                        // don't use toString here!!!
+                        box.setX(box.getX() + 20);
+                        box.setFill(Color.CADETBLUE);
+                        checkBounds(box);
+                        break;
+                    case LEFT:
+                        box.setX(box.getX() - 20);
+                        box.setFill(Color.RED);
+                        checkBounds(box);
+                        break;
+                    case UP:
+                        box.setY(box.getY() - 20);
+                        box.setFill(Color.GREEN);
+                        checkBounds(box);
+                        break;
+                    case DOWN:
+                        box.setY(box.getY() + 20);
+                        box.setFill(Color.ORANGE);
+                        checkBounds(box);
+                        break;
+                    default:
+                        break;
+                }
             }
         });
 
@@ -135,13 +139,14 @@ public class MostBasicJavaFXMove extends Application {
     private class MyTimer extends AnimationTimer {
 
         boolean movedown = true;
+        boolean moveright = true;
 
         /// handle is defined by the abstract parent class -- it must be redined 
         /// this is what happens again and again until stop()
         @Override
         public void handle(long now) {
             // You can look at the key presses here as well -- this is one of many. Try others
-            if (input.contains("LEFT")) {
+            if (input.contains("RIGHT")) {
                 box.setX(box.getX() - 5);
             }
 
@@ -153,20 +158,33 @@ public class MostBasicJavaFXMove extends Application {
         private void doHandle() {
             checkBounds(box);
             if (movedown && rect.getY() < 555) {
-                rect.setY(rect.getY() + 5);
+                rect.setY(rect.getY() + 0.1);
             }
             if (!movedown && rect.getY() > 1) {
-                rect.setY(rect.getY() - 5);
+                rect.setY(rect.getY() - 0.1);
             }
-            if (rect.getY() > 550) {
+            if (moveright && rect.getX() < 555) {
+                rect.setX(rect.getX() + 0.1);
+            }
+            if (!moveright && rect.getX() > 1) {
+                rect.setX(rect.getX() - 0.1);
+            }
+            if (rect.getY() > box.getY()) {
                 movedown = false;
             }
-            if (rect.getY() < 1) {
+            if (rect.getY() < box.getY()) {
                 movedown = true;
             }
-
-            //stop();
-            //System.out.println("Animation stopped");
+            if (rect.getX() < box.getX()) {
+                moveright = true;
+            }
+            if (rect.getX() > box.getX()) {
+                moveright = false;
+            }
+            if (!game) {
+                stop();
+                System.out.println("Animation stopped");
+            }
         }
     }
 
@@ -187,7 +205,7 @@ public class MostBasicJavaFXMove extends Application {
         }
         if (collisionDetected) {
             box.setFill(Color.RED);
+            game = false;
         }
     }
-
 }
