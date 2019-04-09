@@ -169,9 +169,6 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         @Override
         public void handle(long now) {
             // You can look at the key presses here as well -- this is one of many. Try others
-            if (input.contains("RIGHT")) {
-                box.setX(box.getX() - 5);
-            }
 
             doHandle();
             /// notice doHandle()  is what happens again and again it's defined below
@@ -230,33 +227,5 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
             box.setFill(Color.RED);
             isAlive = false;
         }
-    }
-
-    class Player extends Rectangle {
-
-        int health;
-
-        public Player(double x, double y) {
-            super(x, y, 20, 20);
-            this.setFill(Color.MAGENTA);
-            this.health = 20;
-        }
-
-        void moveUp() {
-            this.setY(this.getY() - 5);
-        }
-
-        void moveDown() {
-            this.setY(this.getY() + 5);
-        }
-
-        void moveRight() {
-            this.setX(this.getX() + 5);
-        }
-
-        void moveLeft() {
-            this.setX(this.getX() - 5);
-        }
-
     }
 }
