@@ -1,18 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
- */
 package mostbasicjavafxmove;
 
 import java.util.ArrayList;
@@ -38,6 +23,7 @@ import javafx.scene.shape.Shape;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.*;
 
 /**
  * For more information see:
@@ -57,7 +43,8 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
+        
+        Image background = new Image("file:/moon-2048727_1280.jpg");       
         Group root = new Group();
         Scene scene = new Scene(root, Color.BLACK);
         primaryStage.setTitle("box check");
@@ -86,6 +73,9 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
 
         // notice the difference in how an ArrayList adds items 
         badblockz.add(rect);
+        
+        ImageView iv1 = new ImageView();
+        iv1.setImage(background);
 
         //we have created an animation timer --- the class MUST be overwritten - look below 
         AnimationTimer timer = new MyTimer();
@@ -131,7 +121,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
 
         scene.setOnKeyReleased((KeyEvent event) -> {
             if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT) {
-                // rectangleVelocity.set(0);
+                damon.setVelocity(3);
             }
         });
 
@@ -142,6 +132,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         root.getChildren().add(box);
         root.getChildren().add(circle);
         root.getChildren().add(damon);
+        root.getChildren().add(iv1);
 
         timer.start();
         primaryStage.show();
@@ -159,7 +150,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
 
     //// ^^^^^^^^^^^  MAIN ^^^^^^^^^^^^^
     // we create our time here --- to animate 
-    private class MyTimer extends AnimationTimer {
+    public class MyTimer extends AnimationTimer {
 
         boolean movedown = true;
         boolean moveright = true;
@@ -209,7 +200,8 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
     }
 
     private void checkBounds(Rectangle box) {
-        // checkBounds is called in two different locations --- it's really only necessary in the animation dohandle
+        // checkBounds is called in two different locations --- it's really only
+        //necessary in the animation dohandle
         // experiment - check the differences
 
         boolean collisionDetected = false;

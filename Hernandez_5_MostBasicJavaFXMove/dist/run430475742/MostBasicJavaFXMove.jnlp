@@ -8,11 +8,11 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="MostBasicJavaFXMove.jar" size="5616" download="eager" />
+    <jar href="MostBasicJavaFXMove.jar" size="7667" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="MostBasicJavaFXMove" >
     <param name="requiredFXVersion" value="8.0+"/>
   </applet-desc>
-  <jfx:javafx-desc  width="800" height="600" main-class="mostbasicjavafxmove.MostBasicJavaFXMove"  name="MostBasicJavaFXMove" />
+  <jfx:javafx-desc  width="800" height="600" main-class="mostbasicjavafxmove.Hernandez_5_MostBasicJavaFXMove"  name="MostBasicJavaFXMove" />
   <update check="always"/>
 </jnlp>

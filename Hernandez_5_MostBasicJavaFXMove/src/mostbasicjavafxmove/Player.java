@@ -15,6 +15,7 @@ import javafx.scene.shape.Rectangle;
 public class Player extends Rectangle{
 
     int health;
+    int velocity;
 
     public Player(double x, double y) {
         super(x, y, 20, 20);
@@ -22,6 +23,14 @@ public class Player extends Rectangle{
         this.health = 20;
     }
 
+    public int getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(int velocity) {
+        this.velocity = velocity;
+    }
+    
     void moveUp() {
         if (this.getY() > 0) {
             this.setY(this.getY() - 10);
@@ -45,6 +54,6 @@ public class Player extends Rectangle{
             this.setX(this.getX() - 10);
         }
     }
-
+    
 }
 
