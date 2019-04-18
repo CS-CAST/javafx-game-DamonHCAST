@@ -15,20 +15,11 @@ import javafx.scene.shape.Rectangle;
 public class Player extends Rectangle{
 
     int health;
-    int velocity;
 
     public Player(double x, double y) {
         super(x, y, 20, 20);
         this.setFill(Color.MAGENTA);
         this.health = 20;
-    }
-
-    public int getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocity(int velocity) {
-        this.velocity = velocity;
     }
     
     void moveUp() {

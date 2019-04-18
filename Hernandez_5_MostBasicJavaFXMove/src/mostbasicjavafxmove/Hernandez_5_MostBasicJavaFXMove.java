@@ -17,12 +17,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.effect.*;
 import javafx.stage.Stage;
-import javafx.scene.text.*;
-import javafx.event.ActionEvent;
-import javafx.scene.shape.Shape;
-import javafx.event.Event;
-import javafx.scene.Node;
-import javafx.scene.control.*;
 import javafx.scene.image.*;
 
 /**
@@ -125,7 +119,6 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
 
         scene.setOnKeyReleased((KeyEvent event) -> {
             if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT) {
-                damon.setVelocity(3);
             }
         });
 
@@ -153,6 +146,8 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
     }
 
     // ^^^^^^^^^^^  MAIN ^^^^^^^^^^^^^
+    // ilegal start of expression
+    // FBI OPEN UP!
     // we create our time here --- to animate 
     public class MyTimer extends AnimationTimer {
 
@@ -164,7 +159,6 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         @Override
         public void handle(long now) {
             // You can look at the key presses here as well -- this is one of many. Try others
-
             doHandle();
             // notice doHandle()  is what happens again and again it's defined below
 
