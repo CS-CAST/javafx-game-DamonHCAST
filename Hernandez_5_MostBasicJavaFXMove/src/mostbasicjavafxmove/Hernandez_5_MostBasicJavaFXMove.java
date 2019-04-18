@@ -43,10 +43,10 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        
-        Image background = new Image("file:/moon-2048727_1280.jpg");       
+
+        Image background = new Image("file:src/moon-2048727_1280.jpg");
         Group root = new Group();
-        Scene scene = new Scene(root, Color.BLACK);
+        Scene scene = new Scene(root);
         primaryStage.setTitle("box check");
         primaryStage.setScene(scene);
         Random mcRandy = new Random();
@@ -68,14 +68,18 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         rect.setFill(Color.BLUE);
 
         circle = new Ellipse(300, 50, 25, 25);
-        circle.setFill(Color.GOLD);
+        circle.setFill(Color.ORANGE);
         circle.setEffect(new Glow(10));
 
         // notice the difference in how an ArrayList adds items 
         badblockz.add(rect);
-        
+
         ImageView iv1 = new ImageView();
         iv1.setImage(background);
+        iv1.setFitHeight(CanvasY);
+        iv1.setFitWidth(CanvasX);
+        iv1.setSmooth(true);
+        iv1.setCache(true);
 
         //we have created an animation timer --- the class MUST be overwritten - look below 
         AnimationTimer timer = new MyTimer();
@@ -128,11 +132,11 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         //try disabling canvas --- notice the difference 
         root.getChildren().add(canvas);
         //notice we are manually adding the shape objects to the "root" window
+        root.getChildren().add(iv1);        
         root.getChildren().add(rect);
         root.getChildren().add(box);
         root.getChildren().add(circle);
         root.getChildren().add(damon);
-        root.getChildren().add(iv1);
 
         timer.start();
         primaryStage.show();
@@ -148,21 +152,21 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         launch(args);
     }
 
-    //// ^^^^^^^^^^^  MAIN ^^^^^^^^^^^^^
+    // ^^^^^^^^^^^  MAIN ^^^^^^^^^^^^^
     // we create our time here --- to animate 
     public class MyTimer extends AnimationTimer {
 
         boolean movedown = true;
         boolean moveright = true;
 
-        /// handle is defined by the abstract parent class -- it must be redined 
-        /// this is what happens again and again until stop()
+        // handle is defined by the abstract parent class -- it must be redined 
+        // this is what happens again and again until stop()
         @Override
         public void handle(long now) {
             // You can look at the key presses here as well -- this is one of many. Try others
 
             doHandle();
-            /// notice doHandle()  is what happens again and again it's defined below
+            // notice doHandle()  is what happens again and again it's defined below
 
         }
 
@@ -221,3 +225,4 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         }
     }
 }
+// F
