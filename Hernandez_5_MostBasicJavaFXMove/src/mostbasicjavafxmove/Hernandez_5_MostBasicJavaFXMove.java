@@ -38,9 +38,10 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        Image background = new Image("file:src/moon-2048727_1280.jpg");
+        Image background = new Image("file:moon-2048727_1280.jpg");
         Group root = new Group();
         Scene scene = new Scene(root);
+        
         primaryStage.setTitle("box check");
         primaryStage.setScene(scene);
         Random mcRandy = new Random();
@@ -52,7 +53,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         //Notice gc is not being used yet 
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        Player damon = new Player(36, 42);
+        Player damon = new Player(0, 0);
 
         //notice we are creating shape objects 
         box = new Rectangle(300, 300, 23, 23);
@@ -68,15 +69,20 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         // notice the difference in how an ArrayList adds items 
         badblockz.add(rect);
 
+        //add background image while changing the scale to fit window
         ImageView iv1 = new ImageView();
         iv1.setImage(background);
         iv1.setFitHeight(CanvasY);
         iv1.setFitWidth(CanvasX);
-        iv1.setSmooth(true);
-        iv1.setCache(true);
+        //iv1.setSmooth(true);
+        //iv1.setCache(true);
 
         //we have created an animation timer --- the class MUST be overwritten - look below 
         AnimationTimer timer = new MyTimer();
+              
+        for (int i = 0; i < badblockz.size() ; i++) {
+            System.out.println(i);
+        }
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -117,15 +123,15 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
             }
         });
 
-        scene.setOnKeyReleased((KeyEvent event) -> {
+        /*scene.setOnKeyReleased((KeyEvent event) -> {
             if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT) {
             }
-        });
+        });*/
 
         //try disabling canvas --- notice the difference 
         root.getChildren().add(canvas);
         //notice we are manually adding the shape objects to the "root" window
-        root.getChildren().add(iv1);        
+        root.getChildren().add(iv1);
         root.getChildren().add(rect);
         root.getChildren().add(box);
         root.getChildren().add(circle);
@@ -165,18 +171,19 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         }
 
         private void doHandle() {
+            double speed = 0.1;
             checkBounds(box);
             if (movedown && rect.getY() < 555) {
-                rect.setY(rect.getY() + 0.1);
+                rect.setY(rect.getY() + speed);
             }
             if (!movedown && rect.getY() > 1) {
-                rect.setY(rect.getY() - 0.1);
+                rect.setY(rect.getY() - speed);
             }
             if (moveright && rect.getX() < 555) {
-                rect.setX(rect.getX() + 0.1);
+                rect.setX(rect.getX() + speed);
             }
             if (!moveright && rect.getX() > 1) {
-                rect.setX(rect.getX() - 0.1);
+                rect.setX(rect.getX() - speed);
             }
             if (rect.getY() > box.getY()) {
                 movedown = false;
@@ -190,8 +197,8 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
             if (rect.getX() > box.getX()) {
                 moveright = false;
             }
+             
             if (!isAlive) {
-                stop();
                 System.out.println("Animation stopped");
             }
         }
@@ -203,6 +210,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         // experiment - check the differences
 
         boolean collisionDetected = false;
+        Random mcRando = new Random();
 
         // notice the difference in how an ArrayList iterates through items 
         for (Rectangle badblock : badblockz) {
@@ -215,8 +223,19 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         }
         if (collisionDetected) {
             box.setFill(Color.RED);
-            isAlive = false;
+            //isAlive = false;
+            rect.setX(mcRando.nextInt(600));
+            rect.setY(mcRando.nextInt(600));
         }
     }
 }
-// F
+/*
+  ________
+ |  _____ |
+ | |  ___||
+ | | |_   |
+ | |  _|  |
+ | |_|    |
+ |________|
+
+*/
