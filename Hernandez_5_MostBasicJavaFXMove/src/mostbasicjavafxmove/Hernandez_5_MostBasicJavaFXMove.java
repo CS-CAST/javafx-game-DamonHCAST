@@ -34,6 +34,8 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
     Rectangle box;
     Ellipse circle;
     boolean isAlive = true;
+    Player damon;
+    Enemy block;
 
     @Override
     public void start(Stage primaryStage) {
@@ -41,7 +43,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         Image background = new Image("file:moon-2048727_1280.jpg");
         Group root = new Group();
         Scene scene = new Scene(root);
-        
+
         primaryStage.setTitle("box check");
         primaryStage.setScene(scene);
         Random mcRandy = new Random();
@@ -53,13 +55,15 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         //Notice gc is not being used yet 
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        Player damon = new Player(0, 0);
+        damon = new Player((CanvasX / 2), (CanvasY / 2));
+        block = new Enemy(mcRandy.nextInt(570), mcRandy.nextInt(570));
 
         //notice we are creating shape objects 
         box = new Rectangle(300, 300, 23, 23);
         box.setFill(Color.PLUM);
 
-        rect = new Rectangle(mcRandy.nextInt(600), mcRandy.nextInt(600), 25, 25);
+        rect = new Rectangle(mcRandy.nextInt(600), mcRandy.nextInt(600),
+                25, 25);
         rect.setFill(Color.BLUE);
 
         circle = new Ellipse(300, 50, 25, 25);
@@ -68,6 +72,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
 
         // notice the difference in how an ArrayList adds items 
         badblockz.add(rect);
+        badblockz.add(block);
 
         //add background image while changing the scale to fit window
         ImageView iv1 = new ImageView();
@@ -79,8 +84,8 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
 
         //we have created an animation timer --- the class MUST be overwritten - look below 
         AnimationTimer timer = new MyTimer();
-              
-        for (int i = 0; i < badblockz.size() ; i++) {
+
+        for (int i = 0; i < badblockz.size(); i++) {
             System.out.println(i);
         }
 
@@ -92,27 +97,27 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
                     case RIGHT:
                         // don't use toString here!!!
                         damon.moveRight();
-                        box.setX(box.getX() + 20);
+                        /*box.setX(box.getX() + 20);
                         box.setFill(Color.CADETBLUE);
-                        checkBounds(box);
+                        checkBounds(damon);*/
                         break;
                     case LEFT:
                         damon.moveLeft();
-                        box.setX(box.getX() - 20);
+                        /*box.setX(box.getX() - 20);
                         box.setFill(Color.RED);
-                        checkBounds(box);
+                        checkBounds(damon);*/
                         break;
                     case UP:
                         damon.moveUp();
-                        box.setY(box.getY() - 20);
+                        /*box.setY(box.getY() - 20);
                         box.setFill(Color.GREEN);
-                        checkBounds(box);
+                        checkBounds(damon);*/
                         break;
                     case DOWN:
                         damon.moveDown();
-                        box.setY(box.getY() + 20);
+                        /*box.setY(box.getY() + 20);
                         box.setFill(Color.ORANGE);
-                        checkBounds(box);
+                        checkBounds(damon);*/
                         break;
                     case ESCAPE:
                         exit();
@@ -123,19 +128,21 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
             }
         });
 
-        /*scene.setOnKeyReleased((KeyEvent event) -> {
-            if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT) {
+        scene.setOnKeyReleased((KeyEvent event) -> {
+            if (event.getCode() == KeyCode.RIGHT) {
+                damon.moveRight();
             }
-        });*/
+        });
 
         //try disabling canvas --- notice the difference 
         root.getChildren().add(canvas);
         //notice we are manually adding the shape objects to the "root" window
         root.getChildren().add(iv1);
-        root.getChildren().add(rect);
-        root.getChildren().add(box);
+        //root.getChildren().add(rect);
+        //root.getChildren().add(box);
         root.getChildren().add(circle);
         root.getChildren().add(damon);
+        root.getChildren().add(block);
 
         timer.start();
         primaryStage.show();
@@ -171,42 +178,45 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         }
 
         private void doHandle() {
-            double speed = 0.1;
-            checkBounds(box);
-            if (movedown && rect.getY() < 555) {
-                rect.setY(rect.getY() + speed);
+            checkBounds(damon);
+            if (movedown && block.getY() < 555) {
+                block.setY(block.getY() + block.speed);
+                block.moveDown();
             }
-            if (!movedown && rect.getY() > 1) {
-                rect.setY(rect.getY() - speed);
+            if (!movedown && block.getY() > 1) {
+                block.setY(block.getY() - block.speed);
+                block.moveUp();
             }
-            if (moveright && rect.getX() < 555) {
-                rect.setX(rect.getX() + speed);
+            if (moveright && block.getX() < 555) {
+                block.setX(block.getX() + block.speed);
+                block.moveRight();
             }
-            if (!moveright && rect.getX() > 1) {
-                rect.setX(rect.getX() - speed);
+            if (!moveright && block.getX() > 1) {
+                block.setX(block.getX() - block.speed);
+                block.moveLeft();
             }
-            if (rect.getY() > box.getY()) {
+            if (block.getY() > damon.getY()) {
                 movedown = false;
             }
-            if (rect.getY() < box.getY()) {
+            if (block.getY() < damon.getY()) {
                 movedown = true;
             }
-            if (rect.getX() < box.getX()) {
+            if (block.getX() < damon.getX()) {
                 moveright = true;
             }
-            if (rect.getX() > box.getX()) {
+            if (block.getX() > damon.getX()) {
                 moveright = false;
             }
-             
+
             if (!isAlive) {
                 System.out.println("Animation stopped");
             }
         }
     }
 
-    private void checkBounds(Rectangle box) {
+    private void checkBounds(Player box) {
         // checkBounds is called in two different locations --- it's really only
-        //necessary in the animation dohandle
+        // necessary in the animation dohandle
         // experiment - check the differences
 
         boolean collisionDetected = false;
@@ -214,7 +224,8 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
 
         // notice the difference in how an ArrayList iterates through items 
         for (Rectangle badblock : badblockz) {
-            if (box.getBoundsInParent().intersects(badblock.getBoundsInParent())) {
+            if (box.getBoundsInParent().intersects( 
+                    badblock.getBoundsInParent())) {
                 collisionDetected = true;
                 badblock.setFill(Color.RED);
             } else {
@@ -222,10 +233,10 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
             }
         }
         if (collisionDetected) {
-            box.setFill(Color.RED);
+            block.setFill(Color.RED);
             //isAlive = false;
-            rect.setX(mcRando.nextInt(600));
-            rect.setY(mcRando.nextInt(600));
+            block.setX(mcRando.nextInt(570));
+            block.setY(mcRando.nextInt(570));
         }
     }
 }
@@ -238,4 +249,4 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
  | |_|    |
  |________|
 
-*/
+ */
