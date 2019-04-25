@@ -15,34 +15,35 @@ import javafx.scene.shape.Rectangle;
 public class Player extends Rectangle{
 
     int health;
+    double speed = 10;
 
     public Player(double x, double y) {
-        super(x, y, 20, 20);
+        super(x, y, 30, 30);
         this.setFill(Color.MAGENTA);
         this.health = 20;
     }
     
     void moveUp() {
         if (this.getY() > 0) {
-            this.setY(this.getY() - 10);
+            this.setY(this.getY() - speed);
         }
     }
 
     void moveDown() {
-        if (this.getY() < 600 - 23) {
-            this.setY(this.getY() + 10);
+        if (this.getY() < (600 - 15) - 20) {
+            this.setY(this.getY() + speed);
         }
     }
 
     void moveRight() {
-        if (this.getX() < 600 - 23) {
-            this.setX(this.getX() + 10);
+        if (this.getX() < (600 - 15) - 20) {
+            this.setX(this.getX() + speed);
         }
     }
 
     void moveLeft() {
         if (this.getX() > 0) {
-            this.setX(this.getX() - 10);
+            this.setX(this.getX() - speed);
         }
     }
     
