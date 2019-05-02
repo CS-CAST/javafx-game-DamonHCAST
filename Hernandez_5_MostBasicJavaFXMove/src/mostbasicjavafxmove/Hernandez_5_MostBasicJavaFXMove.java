@@ -18,6 +18,9 @@ import javafx.scene.shape.Ellipse;
 import javafx.scene.effect.*;
 import javafx.stage.Stage;
 import javafx.scene.image.*;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.*;
+
 
 /**
  * For more information see:
@@ -29,24 +32,28 @@ import javafx.scene.image.*;
 public class Hernandez_5_MostBasicJavaFXMove extends Application {
 
     ArrayList<Rectangle> badblockz = new ArrayList();
+    ArrayList<Ellipse> coinz = new ArrayList();
     ArrayList<String> input = new ArrayList<>();
-    Rectangle rect;
-    Rectangle box;
+    Rectangle brown;
+    Rectangle blue;
     Ellipse circle;
     boolean isAlive = true;
+    int score;
     Player damon;
     Enemy block;
+    Extra point;
+    Text t;
+    Random mcRandy = new Random();
 
     @Override
     public void start(Stage primaryStage) {
 
-        Image background = new Image("file:moon-2048727_1280.jpg");
+        Image background = new Image("file:data/moon-2048727_1280.jpg");
         Group root = new Group();
         Scene scene = new Scene(root);
 
         primaryStage.setTitle("box check");
         primaryStage.setScene(scene);
-        Random mcRandy = new Random();
 
         Canvas canvas = new Canvas(600, 600); //Screen Size
         double CanvasX = canvas.getWidth();
@@ -57,22 +64,24 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
 
         damon = new Player((CanvasX / 2), (CanvasY / 2));
         block = new Enemy(mcRandy.nextInt(570), mcRandy.nextInt(570));
+        point = new Extra(100, 100);
 
         //notice we are creating shape objects 
-        box = new Rectangle(300, 300, 23, 23);
-        box.setFill(Color.PLUM);
+        blue = new Rectangle(300, 300, 23, 23);
+        blue.setFill(Color.PLUM);
 
-        rect = new Rectangle(mcRandy.nextInt(600), mcRandy.nextInt(600),
+        brown = new Rectangle(mcRandy.nextInt(600), mcRandy.nextInt(600),
                 25, 25);
-        rect.setFill(Color.BLUE);
+        brown.setFill(Color.BLUE);
 
         circle = new Ellipse(300, 50, 25, 25);
         circle.setFill(Color.ORANGE);
         circle.setEffect(new Glow(10));
 
         // notice the difference in how an ArrayList adds items 
-        badblockz.add(rect);
         badblockz.add(block);
+        coinz.add(point);
+        badblockz.add(new Enemy(0, 0));
 
         //add background image while changing the scale to fit window
         ImageView iv1 = new ImageView();
@@ -84,6 +93,10 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
 
         //we have created an animation timer --- the class MUST be overwritten - look below 
         AnimationTimer timer = new MyTimer();
+
+        t = new Text(10, 50, "This is a test.");
+        t.setFont(new Font(50));
+        t.setFill(Color.GRAY);
 
         for (int i = 0; i < badblockz.size(); i++) {
             System.out.println(i);
@@ -97,52 +110,53 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
                     case RIGHT:
                         // don't use toString here!!!
                         damon.moveRight();
-                        /*box.setX(box.getX() + 20);
-                        box.setFill(Color.CADETBLUE);
+                        /*blue.setX(blue.getX() + 20);
+                        blue.setFill(Color.CADETBLUE);
                         checkBounds(damon);*/
                         break;
                     case LEFT:
                         damon.moveLeft();
-                        /*box.setX(box.getX() - 20);
-                        box.setFill(Color.RED);
+                        /*blue.setX(blue.getX() - 20);
+                        blue.setFill(Color.RED);
                         checkBounds(damon);*/
                         break;
                     case UP:
                         damon.moveUp();
-                        /*box.setY(box.getY() - 20);
-                        box.setFill(Color.GREEN);
+                        /*blue.setY(blue.getY() - 20);
+                        blue.setFill(Color.GREEN);
                         checkBounds(damon);*/
                         break;
                     case DOWN:
                         damon.moveDown();
-                        /*box.setY(box.getY() + 20);
-                        box.setFill(Color.ORANGE);
+                        /*blue.setY(blue.getY() + 20);
+                        blue.setFill(Color.ORANGE);
                         checkBounds(damon);*/
                         break;
                     case ESCAPE:
                         exit();
-                        break;
                     default:
                         break;
                 }
             }
         });
 
-        scene.setOnKeyReleased((KeyEvent event) -> {
+        /*scene.setOnKeyReleased((KeyEvent event) -> {
             if (event.getCode() == KeyCode.RIGHT) {
                 damon.moveRight();
             }
-        });
-
+        });*/
         //try disabling canvas --- notice the difference 
         root.getChildren().add(canvas);
         //notice we are manually adding the shape objects to the "root" window
         root.getChildren().add(iv1);
-        //root.getChildren().add(rect);
-        //root.getChildren().add(box);
-        root.getChildren().add(circle);
+        //root.getChildren().add(brown);
+        //root.getChildren().add(blue);
         root.getChildren().add(damon);
-        root.getChildren().add(block);
+        for (Rectangle e : badblockz) {
+            root.getChildren().add(e);
+        }
+        root.getChildren().add(point);
+        root.getChildren().add(t);
 
         timer.start();
         primaryStage.show();
@@ -159,6 +173,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
     }
 
     // ^^^^^^^^^^^  MAIN ^^^^^^^^^^^^^
+    // go to youtube to find music use saveclipbro to save videos.
     // ilegal start of expression
     // FBI OPEN UP!
     // we create our time here --- to animate 
@@ -209,34 +224,53 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
             }
 
             if (!isAlive) {
-                System.out.println("Animation stopped");
             }
+
+            t.setText("" + score);
         }
     }
 
-    private void checkBounds(Player box) {
+    private void checkBounds(Player box) { // need to use box for name
         // checkBounds is called in two different locations --- it's really only
         // necessary in the animation dohandle
         // experiment - check the differences
 
-        boolean collisionDetected = false;
-        Random mcRando = new Random();
+        boolean blockCollisionDetected = false;
+        boolean coinCollisionDetected = false;
 
         // notice the difference in how an ArrayList iterates through items 
         for (Rectangle badblock : badblockz) {
-            if (box.getBoundsInParent().intersects( 
+            if (box.getBoundsInParent().intersects(
                     badblock.getBoundsInParent())) {
-                collisionDetected = true;
+                blockCollisionDetected = true;
                 badblock.setFill(Color.RED);
             } else {
                 badblock.setFill(Color.BLUE);
             }
         }
-        if (collisionDetected) {
+        for (Ellipse coin : coinz) {
+            if (box.getBoundsInParent().intersects(
+                    coin.getBoundsInParent())) {
+                coinCollisionDetected = true;
+            }
+        }
+        if (blockCollisionDetected) {
             block.setFill(Color.RED);
-            //isAlive = false;
-            block.setX(mcRando.nextInt(570));
-            block.setY(mcRando.nextInt(570));
+            isAlive = false;
+            block.setX(mcRandy.nextInt(570));
+            block.setY(mcRandy.nextInt(570));
+            damon.setX(300);
+            damon.setY(300);
+            block.setX(mcRandy.nextInt(570));
+            block.setY(mcRandy.nextInt(570));
+            point.setCenterX(mcRandy.nextInt(570));
+            point.setCenterY(mcRandy.nextInt(570));
+            score = 0;
+        }
+        if (coinCollisionDetected) {
+            point.setCenterX(mcRandy.nextInt(570));
+            point.setCenterY(mcRandy.nextInt(570));
+            score++;
         }
     }
 }
@@ -247,6 +281,6 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
  | | |_   |
  | |  _|  |
  | |_|    |
- |________|
+ |________| ^_^
 
  */
