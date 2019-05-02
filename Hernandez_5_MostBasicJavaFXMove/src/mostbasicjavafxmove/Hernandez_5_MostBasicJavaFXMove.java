@@ -21,7 +21,6 @@ import javafx.scene.image.*;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.*;
 
-
 /**
  * For more information see:
  * http://stackoverflow.com/questions/21331519/how-to-get-smooth-animation-with-keypress-event-in-javafx
@@ -36,8 +35,10 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
     ArrayList<String> input = new ArrayList<>();
     Rectangle brown;
     Rectangle blue;
+    Rectangle startScreen;
     Ellipse circle;
     boolean isAlive = true;
+    boolean haveIStarted = false;
     int score;
     Player damon;
     Enemy block;
@@ -58,6 +59,9 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         Canvas canvas = new Canvas(600, 600); //Screen Size
         double CanvasX = canvas.getWidth();
         double CanvasY = canvas.getHeight();
+
+        startScreen = new Rectangle(0, 0, CanvasX, CanvasY);
+        startScreen.setFill(Color.GREEN);
 
         //Notice gc is not being used yet 
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -107,6 +111,11 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
             public void handle(KeyEvent event) {
                 String code = event.getCode().toString();
                 switch (event.getCode()) {
+                    case A:
+                        haveIStarted = true;
+                        startScreen.setWidth(0);
+                        startScreen.setHeight(0);
+                        break;
                     case RIGHT:
                         // don't use toString here!!!
                         damon.moveRight();
@@ -136,6 +145,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
                         exit();
                     default:
                         break;
+
                 }
             }
         });
@@ -152,11 +162,13 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         //root.getChildren().add(brown);
         //root.getChildren().add(blue);
         root.getChildren().add(damon);
+        root.getChildren().add(damon.picture);
         for (Rectangle e : badblockz) {
             root.getChildren().add(e);
         }
         root.getChildren().add(point);
         root.getChildren().add(t);
+        root.getChildren().add(startScreen);
 
         timer.start();
         primaryStage.show();
@@ -187,7 +199,9 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         @Override
         public void handle(long now) {
             // You can look at the key presses here as well -- this is one of many. Try others
-            doHandle();
+            if (haveIStarted) {
+                doHandle();
+            }
             // notice doHandle()  is what happens again and again it's defined below
 
         }
@@ -261,6 +275,8 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
             block.setY(mcRandy.nextInt(570));
             damon.setX(300);
             damon.setY(300);
+            damon.picture.setX(damon.getX());
+            damon.picture.setY(damon.getY());
             block.setX(mcRandy.nextInt(570));
             block.setY(mcRandy.nextInt(570));
             point.setCenterX(mcRandy.nextInt(570));
