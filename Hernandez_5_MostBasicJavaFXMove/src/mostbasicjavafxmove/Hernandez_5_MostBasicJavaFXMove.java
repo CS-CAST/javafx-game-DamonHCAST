@@ -44,6 +44,8 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
     Enemy block;
     Extra point;
     Text t;
+    Text a;
+    Text d;
     Random mcRandy = new Random();
 
     @Override
@@ -62,6 +64,8 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
 
         startScreen = new Rectangle(0, 0, CanvasX, CanvasY);
         startScreen.setFill(Color.GREEN);
+        a = new Text(10, 300, "Press A");
+        a.setFont(new Font(50));
 
         //Notice gc is not being used yet 
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -85,7 +89,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         // notice the difference in how an ArrayList adds items 
         badblockz.add(block);
         coinz.add(point);
-        badblockz.add(new Enemy(0, 0));
+        //badblockz.add(new Enemy(0, 0));
 
         //add background image while changing the scale to fit window
         ImageView iv1 = new ImageView();
@@ -101,6 +105,10 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         t = new Text(10, 50, "This is a test.");
         t.setFont(new Font(50));
         t.setFill(Color.GRAY);
+        
+        d = new Text(10, 590, "You lost! Press A to restart.");
+        d.setFont(new Font(20));
+        d.setFill(Color.GREEN);
 
         for (int i = 0; i < badblockz.size(); i++) {
             System.out.println(i);
@@ -115,28 +123,46 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
                         haveIStarted = true;
                         startScreen.setWidth(0);
                         startScreen.setHeight(0);
+                        a.setX(600);
+                        d.setX(600);
+                        block.setX(mcRandy.nextInt(570));
+                        block.setY(mcRandy.nextInt(570));
+                        damon.direction = 0;
+                        damon.setX(300);
+                        damon.setY(300);
+                        damon.picture.setX(damon.getX());
+                        damon.picture.setY(damon.getY());
+                        damon.setFill(Color.TRANSPARENT);
+                        block.setX(mcRandy.nextInt(570));
+                        block.setY(mcRandy.nextInt(570));
+                        point.setCenterX(mcRandy.nextInt(570));
+                        point.setCenterY(mcRandy.nextInt(570));
+                        score = 0;
+                        break;
+                    case R:
+                        score = 0;
                         break;
                     case RIGHT:
                         // don't use toString here!!!
-                        damon.moveRight();
+                        damon.direction = 2;
                         /*blue.setX(blue.getX() + 20);
                         blue.setFill(Color.CADETBLUE);
                         checkBounds(damon);*/
                         break;
                     case LEFT:
-                        damon.moveLeft();
+                        damon.direction = 4;
                         /*blue.setX(blue.getX() - 20);
                         blue.setFill(Color.RED);
                         checkBounds(damon);*/
                         break;
                     case UP:
-                        damon.moveUp();
+                        damon.direction = 1;
                         /*blue.setY(blue.getY() - 20);
                         blue.setFill(Color.GREEN);
                         checkBounds(damon);*/
                         break;
                     case DOWN:
-                        damon.moveDown();
+                        damon.direction = 3;
                         /*blue.setY(blue.getY() + 20);
                         blue.setFill(Color.ORANGE);
                         checkBounds(damon);*/
@@ -169,6 +195,8 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         root.getChildren().add(point);
         root.getChildren().add(t);
         root.getChildren().add(startScreen);
+        root.getChildren().add(a);
+        root.getChildren().add(d);
 
         timer.start();
         primaryStage.show();
@@ -200,6 +228,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         public void handle(long now) {
             // You can look at the key presses here as well -- this is one of many. Try others
             if (haveIStarted) {
+                start();
                 doHandle();
             }
             // notice doHandle()  is what happens again and again it's defined below
@@ -236,8 +265,16 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
             if (block.getX() > damon.getX()) {
                 moveright = false;
             }
-
-            if (!isAlive) {
+            
+            if (damon.direction == 1) {
+                damon.moveUp();
+            } else if (damon.direction == 3) {
+                damon.moveDown();
+            }
+            if (damon.direction == 2) {
+                damon.moveRight();
+            } else if (damon.direction == 4) {
+                damon.moveLeft();
             }
 
             t.setText("" + score);
@@ -269,19 +306,9 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
             }
         }
         if (blockCollisionDetected) {
-            block.setFill(Color.RED);
-            isAlive = false;
-            block.setX(mcRandy.nextInt(570));
-            block.setY(mcRandy.nextInt(570));
-            damon.setX(300);
-            damon.setY(300);
-            damon.picture.setX(damon.getX());
-            damon.picture.setY(damon.getY());
-            block.setX(mcRandy.nextInt(570));
-            block.setY(mcRandy.nextInt(570));
-            point.setCenterX(mcRandy.nextInt(570));
-            point.setCenterY(mcRandy.nextInt(570));
-            score = 0;
+            damon.setFill(Color.RED);
+            haveIStarted = false;
+            d.setX(10);
         }
         if (coinCollisionDetected) {
             point.setCenterX(mcRandy.nextInt(570));

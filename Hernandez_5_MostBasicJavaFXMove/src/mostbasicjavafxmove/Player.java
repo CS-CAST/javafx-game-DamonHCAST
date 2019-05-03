@@ -16,19 +16,20 @@ import javafx.scene.image.*;
 public class Player extends Rectangle {
 
     int health;
-    double speed = 10;
+    public int direction;
+    double speed = 0.2;
     Image pimg = new Image("file:data/orangeship3.png");
     public ImageView picture = new ImageView(pimg);
 
     public Player(double x, double y) {
         super(x, y, 30, 30);
         health = 20;
-        setFill(Color.TRANSPARENT);
         picture.setImage(pimg);
         picture.setX(x);
         picture.setY(y);
         picture.setFitWidth(30);
         picture.setFitHeight(30);
+        setFill(Color.TRANSPARENT);     
     }
 
     public void moveUp() {

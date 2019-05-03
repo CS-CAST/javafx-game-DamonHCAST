@@ -15,7 +15,7 @@ import javafx.scene.paint.Color;
 public class Enemy extends Rectangle {
 
     int health;
-    double speed = 0.03;
+    double speed = 0.05;
 
     public Enemy(double x, double y) {
         super(x, y, 25, 25);
