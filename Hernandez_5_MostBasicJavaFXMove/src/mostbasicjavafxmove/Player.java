@@ -16,10 +16,10 @@ import javafx.scene.image.*;
 public class Player extends Rectangle {
 
     int health;
-    public int direction;
+    int direction;
     double speed = 0.2;
     Image pimg = new Image("file:data/orangeship3.png");
-    public ImageView picture = new ImageView(pimg);
+    ImageView picture = new ImageView(pimg);
 
     public Player(double x, double y) {
         super(x, y, 30, 30);
@@ -63,6 +63,7 @@ public class Player extends Rectangle {
         }
         picture.setRotate(270);
     }
+    
 }
 
 /*direction

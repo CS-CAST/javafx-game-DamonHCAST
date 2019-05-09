@@ -127,9 +127,13 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
                         d.setX(600);
                         block.setX(mcRandy.nextInt(570));
                         block.setY(mcRandy.nextInt(570));
+                        block.picture.setX(block.getX());
+                        block.picture.setY(block.getY());
+                        block.speed = 0.05;
                         damon.direction = 0;
                         damon.setX(300);
                         damon.setY(300);
+                        damon.speed = 0.2;
                         damon.picture.setX(damon.getX());
                         damon.picture.setY(damon.getY());
                         damon.setFill(Color.TRANSPARENT);
@@ -189,6 +193,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         //root.getChildren().add(blue);
         root.getChildren().add(damon);
         root.getChildren().add(damon.picture);
+        root.getChildren().add(block.picture);
         for (Rectangle e : badblockz) {
             root.getChildren().add(e);
         }
@@ -276,7 +281,8 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
             } else if (damon.direction == 4) {
                 damon.moveLeft();
             }
-
+            
+            
             t.setText("" + score);
         }
     }
@@ -296,7 +302,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
                 blockCollisionDetected = true;
                 badblock.setFill(Color.RED);
             } else {
-                badblock.setFill(Color.BLUE);
+                badblock.setFill(Color.TRANSPARENT);
             }
         }
         for (Ellipse coin : coinz) {
@@ -314,6 +320,8 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
             point.setCenterX(mcRandy.nextInt(570));
             point.setCenterY(mcRandy.nextInt(570));
             score++;
+            damon.speed += 0.01;
+            block.speed += 0.001;
         }
     }
 }
