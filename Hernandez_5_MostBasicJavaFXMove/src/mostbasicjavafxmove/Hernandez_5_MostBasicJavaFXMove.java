@@ -64,7 +64,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
 
         startScreen = new Rectangle(0, 0, CanvasX, CanvasY);
         startScreen.setFill(Color.GREEN);
-        a = new Text(10, 300, "Press A");
+        a = new Text(10, 300, "JavaFXMove\nPress A");
         a.setFont(new Font(50));
 
         //Notice gc is not being used yet 
@@ -141,9 +141,6 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
                         block.setY(mcRandy.nextInt(570));
                         point.setCenterX(mcRandy.nextInt(570));
                         point.setCenterY(mcRandy.nextInt(570));
-                        score = 0;
-                        break;
-                    case R:
                         score = 0;
                         break;
                     case RIGHT:
@@ -331,7 +328,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
  | |  ___||
  | | |_   |
  | |  _|  |
- | |_|    |
- |________| ^_^
-
+ | |_|    |       **         
+ |________|[ ^_^ ]/\[ UwU ]
+Dont' mind me, just making kaomoji art
  */
