@@ -1,5 +1,10 @@
 # JavaFX Game - Continuing use of core Java skills with graphics 
 
+Changelog:
++Added import ThreadLocalRandom in replace of Random
+-Removed blue and brown constructors
+-Removed comments including constructors and assigns
+
 1. Login to github.
 2. Then accept this git assignment.
 3. Make a game.
