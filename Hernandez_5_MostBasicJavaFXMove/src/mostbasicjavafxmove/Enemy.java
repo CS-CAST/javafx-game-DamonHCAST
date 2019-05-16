@@ -5,6 +5,7 @@
  */
 package mostbasicjavafxmove;
 
+import java.util.concurrent.ThreadLocalRandom;
 import javafx.scene.image.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
@@ -58,6 +59,26 @@ public class Enemy extends Rectangle {
         if (this.getX() > 0) {
             this.setX(this.getX() - speed);
             this.picture.setX(this.getX());
+        }
+    }
+    
+    void respawn() {
+        int respawnPosition = ThreadLocalRandom.current().nextInt(4);
+        if (respawnPosition == 1) {
+            this.setX(10);
+            this.setY(10);
+        }
+        if (respawnPosition == 2) {
+            this.setX(580);
+            this.setY(10);
+        }
+        if (respawnPosition == 3) {
+            this.setX(10);
+            this.setY(580);
+        }
+        if (respawnPosition == 4) {
+            this.setX(580);
+            this.setY(580);
         }
     }
 }

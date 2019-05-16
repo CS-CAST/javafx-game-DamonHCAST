@@ -1,7 +1,6 @@
 package mostbasicjavafxmove;
 
 import java.util.ArrayList;
-import java.util.Random;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import static javafx.application.Platform.exit;
@@ -10,7 +9,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -33,8 +31,6 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
     ArrayList<Rectangle> badblockz = new ArrayList();
     ArrayList<Ellipse> coinz = new ArrayList();
     ArrayList<String> input = new ArrayList<>();
-    Rectangle brown;
-    Rectangle blue;
     Rectangle startScreen;
     Ellipse circle;
     boolean isAlive = true;
@@ -46,7 +42,6 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
     Text t;
     Text a;
     Text d;
-    Random mcRandy = new Random();
 
     @Override
     public void start(Stage primaryStage) {
@@ -71,17 +66,10 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         damon = new Player((CanvasX / 2), (CanvasY / 2));
-        block = new Enemy(mcRandy.nextInt(570), mcRandy.nextInt(570));
+        block = new Enemy(0, 0);
         point = new Extra(100, 100);
 
         //notice we are creating shape objects 
-        blue = new Rectangle(300, 300, 23, 23);
-        blue.setFill(Color.PLUM);
-
-        brown = new Rectangle(mcRandy.nextInt(600), mcRandy.nextInt(600),
-                25, 25);
-        brown.setFill(Color.BLUE);
-
         circle = new Ellipse(300, 50, 25, 25);
         circle.setFill(Color.ORANGE);
         circle.setEffect(new Glow(10));
@@ -89,15 +77,13 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         // notice the difference in how an ArrayList adds items 
         badblockz.add(block);
         coinz.add(point);
-        //badblockz.add(new Enemy(0, 0));
 
         //add background image while changing the scale to fit window
         ImageView iv1 = new ImageView();
         iv1.setImage(background);
         iv1.setFitHeight(CanvasY);
         iv1.setFitWidth(CanvasX);
-        //iv1.setSmooth(true);
-        //iv1.setCache(true);
+
 
         //we have created an animation timer --- the class MUST be overwritten - look below 
         AnimationTimer timer = new MyTimer();
@@ -117,7 +103,6 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                String code = event.getCode().toString();
                 switch (event.getCode()) {
                     case A:
                         haveIStarted = true;
@@ -125,8 +110,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
                         startScreen.setHeight(0);
                         a.setX(600);
                         d.setX(600);
-                        block.setX(mcRandy.nextInt(570));
-                        block.setY(mcRandy.nextInt(570));
+                        block.respawn();
                         block.picture.setX(block.getX());
                         block.picture.setY(block.getY());
                         block.speed = 0.05;
@@ -137,36 +121,21 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
                         damon.picture.setX(damon.getX());
                         damon.picture.setY(damon.getY());
                         damon.setFill(Color.TRANSPARENT);
-                        block.setX(mcRandy.nextInt(570));
-                        block.setY(mcRandy.nextInt(570));
-                        point.setCenterX(mcRandy.nextInt(570));
-                        point.setCenterY(mcRandy.nextInt(570));
+                        point.respawn();
                         score = 0;
                         break;
                     case RIGHT:
                         // don't use toString here!!!
                         damon.direction = 2;
-                        /*blue.setX(blue.getX() + 20);
-                        blue.setFill(Color.CADETBLUE);
-                        checkBounds(damon);*/
                         break;
                     case LEFT:
                         damon.direction = 4;
-                        /*blue.setX(blue.getX() - 20);
-                        blue.setFill(Color.RED);
-                        checkBounds(damon);*/
                         break;
                     case UP:
                         damon.direction = 1;
-                        /*blue.setY(blue.getY() - 20);
-                        blue.setFill(Color.GREEN);
-                        checkBounds(damon);*/
                         break;
                     case DOWN:
                         damon.direction = 3;
-                        /*blue.setY(blue.getY() + 20);
-                        blue.setFill(Color.ORANGE);
-                        checkBounds(damon);*/
                         break;
                     case ESCAPE:
                         exit();
@@ -177,17 +146,10 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
             }
         });
 
-        /*scene.setOnKeyReleased((KeyEvent event) -> {
-            if (event.getCode() == KeyCode.RIGHT) {
-                damon.moveRight();
-            }
-        });*/
         //try disabling canvas --- notice the difference 
         root.getChildren().add(canvas);
         //notice we are manually adding the shape objects to the "root" window
         root.getChildren().add(iv1);
-        //root.getChildren().add(brown);
-        //root.getChildren().add(blue);
         root.getChildren().add(damon);
         root.getChildren().add(damon.picture);
         root.getChildren().add(block.picture);
@@ -314,8 +276,7 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
             d.setX(10);
         }
         if (coinCollisionDetected) {
-            point.setCenterX(mcRandy.nextInt(570));
-            point.setCenterY(mcRandy.nextInt(570));
+            point.respawn();
             score++;
             damon.speed += 0.01;
             block.speed += 0.001;
@@ -330,5 +291,5 @@ public class Hernandez_5_MostBasicJavaFXMove extends Application {
  | |  _|  |
  | |_|    |       **         
  |________|[ ^_^ ]/\[ UwU ]
-Dont' mind me, just making kaomoji art
+Don't mind me, just making kaomoji art
  */
